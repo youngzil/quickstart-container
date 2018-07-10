@@ -24,13 +24,13 @@
 	</dependencies>
 
 	<modules>
-		<module>quickstart-container-jboss</module>
-		<module>quickstart-container-jetty</module>
-		<module>quickstart-container-tomcat</module>
-		<module>quickstart-container-weblogic</module>
-		<module>quickstart-container-websphere</module>
-		<module>quickstart-container-jersey</module>
-		<module>quickstart-container-docker</module>
+		<module>quickstart-jboss</module>
+		<module>quickstart-jetty</module>
+		<module>quickstart-tomcat</module>
+		<module>quickstart-weblogic</module>
+		<module>quickstart-websphere</module>
+		<module>quickstart-jersey</module>
+		<module>quickstart-docker</module>
 	</modules>
 
 </project>

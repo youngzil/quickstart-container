@@ -10,7 +10,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>quickstart-container-websphere</artifactId>
+	<artifactId>quickstart-weblogic</artifactId>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}-${project.version}</name>
 	<url>http://maven.apache.org</url>
