@@ -22,7 +22,6 @@
 	</dependencies>
 
 	<modules>
-		<module>quickstart-docker</module>
 		<module>quickstart-pouch</module>
 	</modules>
 
