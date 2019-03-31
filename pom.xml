@@ -23,6 +23,7 @@
 
 	<modules>
 		<module>quickstart-pouch</module>
+		<module>quickstart-kubernetes</module>
 	</modules>
 
 </project>

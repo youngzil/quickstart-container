@@ -1,0 +1,42 @@
+FROM centos:7
+MAINTAINER  yangzl<youngzil@163.com>
+
+RUN yum install -y java-1.8.0-openjdk-headless && yum clean all -y
+#RUN yum install -y java-1.8.0-openjdk-headless unzip gettext nmap-ncat openssl && yum clean all -y
+
+ENV TOMCAT_HOME  /opt/tomcat/9/
+
+COPY apache-tomcat-9.0.14.tar.gz ${TOMCAT_HOME}
+WORKDIR ${TOMCAT_HOME}
+#RUN tar -xzvf apache-tomcat-9.0.14.tar.gz && chmod +x ${TOMCAT_HOME}/apache-tomcat-9.0.14/bin/startup.sh \
+#	&& rm apache-tomcat-9.0.14.tar.gz 
+RUN tar -xzvf apache-tomcat-9.0.14.tar.gz && chmod +x ${TOMCAT_HOME}/apache-tomcat-9.0.14/bin/catalina.sh \ 
+	&& rm apache-tomcat-9.0.14.tar.gz 
+
+EXPOSE 8080
+
+#RUN sed -i 's/${JAVA_HOME}\/jre\/lib\/ext/${JAVA_HOME}\/jre\/lib\/ext:${JAVA_HOME}\/lib\/ext/' ${ROCKETMQ_HOME}/bin/tools.sh
+
+#测试，进去容器确实生成了test文件夹，证明确实进入了bin文件夹下，但CMD中直接运行必须写脚本的全路径，使用${TOMCAT_HOME}或者其他的都不行
+WORKDIR ${TOMCAT_HOME}/apache-tomcat-9.0.14/bin
+RUN mkdir test
+
+#如果在最后一行有CMD，执行docker run的时候最后就不能带执行脚本参数
+#CMD startup.sh 
+CMD ["/opt/tomcat/9/apache-tomcat-9.0.14/bin/catalina.sh", "run"] #启动tomcat shell执行程序
+#CMD ["${TOMCAT_HOME}/apache-tomcat-9.0.14/bin/catalina.sh", "run"] #启动tomcat shell执行程序
+#exec ${CATALINA_HOME}/bin/catalina.sh run
+
+
+#docker build -t quickstart/tomcat:9 .
+#docker run -it -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9
+#docker run -d -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9 sh startup.sh
+#docker run -it -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9 sh startup.sh
+#docker exec -it quickstart-tomcat /bin/bash 
+
+
+#查看日志
+#docker logs 容器id 
+
+
+

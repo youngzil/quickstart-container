@@ -1,0 +1,56 @@
+# 设置继承的镜像
+FROM ubuntu:14.04
+
+# 创建者信息
+MAINTAINER zytim "zytsayno@gmail.com"
+
+# 设置环境变量，所有操作都是非交互式的
+ENV DEBIAN_FRONTEND noninteractive
+
+# 更改系统的时区设置
+RUN echo "Asia/Shanghai" > /etc/timezone && \
+        dpkg-reconfigure -f noninteractive tzdata
+
+# 设置tomcat的环境变量
+ENV CATALINA_HOME /tomcat
+ENV JAVA_HOME /jdk
+
+# 复制tomcat和jdk文件到镜像中
+ADD apache-tomcat /tomcat
+ADD jdk /jdk
+
+# 复制启动脚本至镜像，并赋予脚本可执行权限
+ADD run.sh /run.sh
+RUN chmod +x /*.sh
+RUN chmod +x /tomcat/bin/*.sh
+
+# 暴露接口8091，这是我的tomcat接口，默认为8080
+EXPOSE 8091
+
+# 设置自启动命令
+CMD ["/run.sh"]
+
+
+
+run脚本如下：
+#!/bin/bash
+# 启动tomcat
+exec ${CATALINA_HOME}/bin/catalina.sh run
+
+构建
+docker build -t tomcat:test . 
+docker build -t tomcat:test1 /home/zyt/tomcat-docker/Dockerfile .
+
+启动
+docker run -d -P tomcat:test
+docker run -d -p 11001:8091 tomcat:test
+
+查看日志
+docker logs 容器id 
+
+
+
+
+
+
+

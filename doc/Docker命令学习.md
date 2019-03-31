@@ -1,3 +1,135 @@
+Docker命令行：
+Docker本身
+Docker镜像
+Docker容器:容器日志查看
+Dockerfile结构和制作
+
+
+
+Image标识：Image ID 或者 [注册仓库/]repository:tag
+Container标识：Container ID 或者 Container names
+外部访问容器（-p 和 -P 标记）和容器之间互联（web与外部互联，db和web互联，db不对外映射端口，web可以访问db）
+数据库和容器之间的挂载和映射
+ 
+ 
+ 
+
+docker本身
+docker version
+docker info
+
+
+
+docker镜像
+docker image ls (docker images)
+docker search image名字
+docker pull Image标识
+
+构建、修改内容和tag、提交、导入导出、删除image
+docker build -t mynginx:0.1 .(Dockerfile 所在的路径,当前目录使用.)
+docker build -t="ouruser/sinatra:v2" .(Dockerfile 所在的路径,当前目录使用.)
+docker build -t rocketmqinc/rocketmq:4.4.0 --build-arg version=4.4.0 .    --build-arg传递参数到image
+
+docker commit -m "Added json gem" -a "Docker Newbee" 0b2616b0e5a8 ouruser/sinatra:v2
+docker tag 5db5f8471261 ouruser/sinatra:devel  修改镜像的标签
+
+拉取和提交、导入和导出，删除
+docker pull Image标识
+docker push ouruser/sinatra  把自己创建的镜像上传到仓库中来共享
+docker save -o ubuntu_14.04.tar ubuntu:14.04  导出镜像到本地文件
+docker load --input ubuntu_14.04.tar (或docker load < ubuntu_14.04.tar)  从导出的本地文件中再导入到本地镜像库,这将导入镜像以及其相关的元数据信息（包括标签等）
+docker rmi training/sinatra  移除本地的镜像(有container引用该image，必须先删除container)
+
+
+docker save -o ubuntu_14.04.tar ubuntu:14.04
+docker load < ubuntu_14.04.tar
+
+
+
+docker容器
+docker container ls 只会显示运行的容器
+docker container ps
+docker ps -a 显示停止的
+docker ps -n 6   相当于docker ps -a 并且只显示前6行
+docker diff container名字  查看容器区别
+docker history nginx:v2	  查看容器历史
+
+运行、进入和退出Container
+docker run --name webserver -d -p 4000:80 nginx   -d后台运行
+docker run --name docker-demo -d -p 8080:80 docker-demo:0.1
+docker run -t -i ubuntu:14.04 /bin/bash 以 ubuntu:14.04 镜像启动一个容器，以交互模式运行，并为容器重新分配一个伪输入终端。
+docker run -d -P --name web -v /src/webapp:/opt/webapp training/webapp python app.py  加载主机的 /src/webapp 目录到容器的 /opt/webapp 目录
+docker run -d -P --name web -v /src/webapp:/opt/webapp:ro training/webapp python app.py  挂载目录只读模式
+
+
+docker run -d -p 9876:9876 -v `pwd`/data/namesrv/logs:/root/logs -v `pwd`/data/namesrv/store:/root/store --name rmqnamesrv  rocketmqinc/rocketmq:4.4.0 sh mqnamesrv
+docker run -d -p 10911:10911 -p 10909:10909 -v `pwd`/data/broker/logs:/root/logs -v `pwd`/data/broker/store:/root/store --name rmqbroker --link rmqnamesrv:namesrv -e "NAMESRV_ADDR=namesrv:9876" rocketmqinc/rocketmq:4.4.0 sh mqbroker
+-e 设置环境变量
+--link <name or id>:alias  其中，name和id是源容器的name和id，alias是源容器在link下的别名。
+#如果在最后一行有CMD，执行docker run的时候最后就不能带执行脚本参数
+
+
+exit 命令或 Ctrl+d 来退出终端
+docker attach nostalgic_hypatia   当多个窗口同时使用该命令进入该容器时，所有的窗口都会同步显示。如果有一个窗口阻塞了，那么其他窗口也无法再进行操作。
+docker exec -it 775c7c9ee1e1 /bin/bash  
+docker exec -it mynginx /bin/sh /root/runoob.sh  在容器mynginx中以交互模式执行容器内/root/runoob.sh脚本
+docker exec -ti rmqbroker sh ./tools.sh org.apache.rocketmq.example.quickstart.Producer  进入rmqbroker容器以交互模式执行容器内Producer脚本
+docker exec -it rmqbroker ./mqadmin clusterList -n 10.21.38.83:9876
+
+
+
+
+启动、停止、restart重启、pause/unpause、删除 container
+docker start|stop|restart
+docker container start|stop|restart 容器标识（容器ID或容器名字）
+docker container rm docker-demo
+docker container pause
+docker container unpause
+
+
+Docker stop停止/remove删除所有容器
+$ docker ps // 查看所有正在运行容器
+$ docker stop containerId // containerId 是容器的ID
+
+$ docker ps -a // 查看所有容器
+$ docker ps -a -q // 查看所有容器ID
+
+$ docker stop $(docker ps -a -q) //  stop停止所有容器
+$ docker  rm $(docker ps -a -q) //   remove删除所有容器
+
+
+
+
+查看详细信息、日志
+docker logs Container标识
+docker port Container标识 [端口] 来查看当前映射的端口配置，也可以查看到绑定的地址
+docker inspect 44fc0f0582d9   查看该容器的详细信息
+
+
+导出和导入容器
+docker export 7691a814370e > ubuntu.tar
+cat ubuntu-14.04-x86_64-minimal.tar.gz  |docker import - ubuntu:14.04  下载了一个 ubuntu-14.04 的镜像，之后使用以下命令导入
+
+
+
+
+
+Dockerfile结构和制作：详细查看Dockerfile文件
+
+Dockerfile 由一行行命令语句组成，并且支持以 # 开头的注释行。
+一般的，Dockerfile 分为四部分：基础镜像信息、维护者信息、镜像操作指令和容器启动时执行指令。
+其中，一开始必须指明所基于的镜像名称，接下来推荐说明维护者信息。
+后面则是镜像操作指令，例如 RUN 指令，RUN 指令将对镜像执行跟随的命令。每运行一条 RUN 指令，镜像添加新的一层，并提交。
+最后是 CMD 指令，来指定运行容器时的操作命令。
+FROM + MAINTAINER + RUN + CMD
+
+
+
+
+
+
+
+
 下载镜像
 sudo docker pull ubuntu:12.04
 sudo docker pull registry.hub.docker.com/ubuntu:12.04
@@ -339,88 +471,6 @@ PING db (172.17.0.5): 48 data bytes
 注意：官方的 ubuntu 镜像默认没有安装 ping，需要自行安装。
 
 用户可以链接多个父容器到子容器，比如可以链接多个 web 到 db 容器上。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
