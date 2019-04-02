@@ -5,10 +5,15 @@ Docker的核心能力：docker-compose、docker-machine、docker-swarm
 4、Docker 安装、运行与加速
 5、镜像的获取与使用： commit 命令 和 Dockerfile 定制镜像
 Docker基本架构： C/S架构，包括客户端和服务端
+ocker 的基础是 Linux 容器（LXC）等虚拟化技术
+Docker 这种虚拟化技术的出现有哪些核心技术：命名空间 (namespaces) 、控制组CGroups（Control Groups）、UnionFS（Union Filesystem）
+
+
 
 
 
 什么是 Docker
+Docker 的基础是 Linux 容器（LXC）等虚拟化技术
 Docker 是一个开源项目，诞生于 2013 年初，最初是 dotCloud 公司内部的一个业余项目。它基于 Google 公司推出的 Go 语言实现。 项目后来加入了 Linux 基金会，遵从了 Apache 2.0 协议，项目代码在 GitHub 上进行维护。
 Docker 自开源后受到广泛的关注和讨论，以至于 dotCloud 公司后来都改名为 Docker Inc。Redhat 已经在其 RHEL6.5 中集中支持 Docker；Google 也在其 PaaS 产品中广泛应用。
 Docker 项目的目标是实现轻量级的操作系统虚拟化解决方案。 Docker 的基础是 Linux 容器（LXC）等技术。
@@ -72,11 +77,153 @@ Docker 客户端则为用户提供一系列可执行命令，用户用这些命�
 
 
 
+Docker 这种虚拟化技术的出现有哪些核心技术：命名空间 (namespaces) 、控制组CGroups（Control Groups）、UnionFS（Union Filesystem）
+
+1、通过 Linux 的命名空间为新创建的进程隔离了文件系统、网络并与宿主机器之间的进程相互隔离
+2、通过 Linux 的CGroups（Control Groups）能够隔离宿主机器上的物理资源，例如 CPU、内存、磁盘 I/O 和网络带宽。
+3、通过UnionFS等存储驱动管理镜像层和容器层的存储（在最新的 Docker 中，overlay2 取代了 aufs 成为了推荐的存储驱动）
+
+
+Linux 的命名空间和控制组分别解决了不同资源隔离的问题，前者解决了进程、网络以及文件系统的隔离，后者实现了 CPU、内存等资源的隔离
+
+
+1、命名空间 (namespaces) 是 Linux 为我们提供的用于分离进程树、网络接口、挂载点以及进程间通信等资源的方法。
+Linux 的命名空间机制提供了以下七种不同的命名空间，包括 CLONE_NEWCGROUP、CLONE_NEWIPC、CLONE_NEWNET、CLONE_NEWNS、CLONE_NEWPID、CLONE_NEWUSER 和 CLONE_NEWUTS，通过这七个选项我们能在创建新的进程时设置新进程应该在哪些资源上与宿主机器进行隔离。
+
+2、进程：进程是 Linux 以及现在操作系统中非常重要的概念，它表示一个正在执行的程序，也是在现代分时系统中的一个任务单元。
+一个是 pid 为 1 的 /sbin/init 进程，另一个是 pid 为 2 的 kthreadd 进程，这两个进程都是被 Linux 中的上帝进程 idle 创建出来的，其中前者负责执行内核的一部分初始化工作和系统配置，也会创建一些类似 getty 的注册进程，而后者负责管理和调度其他的内核进程。
+idle-0、init-1、kthreadd-2，1和2的ppid都是0
+
+init-1 -----》 dockerd -----》 docker-containerd  -----》 docker-containerd-shim  -----》/bin/bash
+                                                                                 -----》/bin/bash
+这就是在使用 clone(2) 创建新进程时传入 CLONE_NEWPID 实现的，也就是使用 Linux 的命名空间实现进程的隔离，Docker 容器内部的任意进程都对宿主机器的进程一无所知。
+Docker 通过命名空间成功完成了与宿主机进程和网络的隔离。
+
+3、网络：每一个使用 docker run 启动的容器其实都具有单独的网络命名空间，Docker 为我们提供了四种不同的网络模式，Host、Container、None 和 Bridge 模式。
+
+当 Docker 服务器在主机上启动之后会创建新的虚拟网桥 docker0，随后在该主机上启动的全部服务在默认情况下都与该网桥相连。
+在默认情况下，每一个容器在创建时都会创建一对虚拟网卡，两个虚拟网卡组成了数据的通道，其中一个会放在创建的容器中，会加入到名为 docker0 网桥中。
+docker0 会为每一个容器分配一个新的 IP 地址并将 docker0 的 IP 地址设置为默认的网关。网桥 docker0 通过 iptables 中的配置与宿主机器上的网卡相连，所有符合条件的请求都会通过 iptables 转发到 docker0 并由网桥分发给对应的机器。
+
+Docker 是如何将容器的内部的端口暴露出来并对数据包进行转发的了；当有 Docker 的容器需要将服务暴露给宿主机器，就会为容器分配一个 IP 地址，同时向 iptables 中追加一条新的规则。
+Docker 通过 Linux 的命名空间实现了网络的隔离，又通过 iptables 进行数据包转发，让 Docker 容器能够优雅地为宿主机器或者其他容器提供服务。
+
+创建虚拟网桥 docker0，所有的Docker容器都有自己的IP，然后通过宿主机器的端口和Container内的端口映射，所有符合条件的请求都会通过 iptables 转发到 docker0 并由网桥分发给对应的Container机器。
+
+libnetwork：整个网络部分的功能都是通过 Docker 拆分出来的 libnetwork 实现的，它提供了一个连接不同容器的实现，同时也能够为应用给出一个能够提供一致的编程接口和网络层抽象的容器网络模型。
+libnetwork 中最重要的概念，容器网络模型由以下的几个主要组件组成，分别是 Sandbox、Endpoint 和 Network：
+在容器网络模型中，每一个容器内部都包含一个 Sandbox，其中存储着当前容器的网络栈配置，包括容器的接口、路由表和 DNS 设置，Linux 使用网络命名空间实现这个 Sandbox，每一个 Sandbox 中都可能会有一个或多个 Endpoint，在 Linux 上就是一个虚拟的网卡 veth，Sandbox 通过 Endpoint 加入到对应的网络中，这里的网络可能就是我们在上面提到的 Linux 网桥或者 VLAN。
+
+在容器内：Endpoint和Sandbox
+Endpoint：在 Linux 上就是一个虚拟的网卡 veth
+Sandbox：有一个或多个 Endpoint，存储着当前容器的网络栈配置，包括容器的接口、路由表和 DNS 设置
+Network：这里的网络可能就是我们在上面提到的 Linux 网桥或者 VLAN。
+
+4、挂载点：
+Linux在新的进程（Docker进程，启动新的Docker容器）中创建隔离的挂载点命名空间需要在 clone 函数中传入 CLONE_NEWNS，这样子进程就能得到父进程挂载点的拷贝，如果不传入这个参数子进程对文件系统的读写都会同步回父进程以及整个主机的文件系统。
+
+如果一个容器需要启动，那么它一定需要提供一个根文件系统（rootfs），容器需要使用这个文件系统来创建一个新的进程，所有二进制的执行都必须在这个根文件系统中。
+
+为了保证当前的容器进程没有办法访问宿主机器上其他目录，我们在这里还需要通过 libcontainer 提供的 pivot_root 或者 chroot 函数改变进程能够访问个文件目录的根节点。
+
+这样就可以将容器需要的目录挂载到了容器中，同时也禁止当前的容器进程访问宿主机器上的其他目录，保证了不同文件系统的隔离。
+
+对于 Docker 使用 chroot 来确保当前的进程无法访问宿主机器的目录：
+chroot（change root）：在 Linux 系统中，系统默认的目录就都是以 / 也就是根目录开头的，chroot 的使用能够改变当前的系统根目录结构，通过改变当前系统的根目录，我们能够限制用户的权利，在新的根目录下并不能够访问旧系统根目录的结构个文件，也就建立了一个与原系统完全隔离的目录结构。
+
+
+5、CGroups
+
+我们通过 Linux 的命名空间为新创建的进程隔离了文件系统、网络并与宿主机器之间的进程相互隔离，但是命名空间并不能够为我们提供物理资源上的隔离，比如 CPU 或者内存，如果在同一台机器上运行了多个对彼此以及宿主机器一无所知的『容器』，这些容器却共同占用了宿主机器的物理资源。
+
+Control Groups（简称 CGroups）就是能够隔离宿主机器上的物理资源，例如 CPU、内存、磁盘 I/O 和网络带宽。
+
+在 CGroup 中，所有的任务就是一个系统的一个进程，而 CGroup 就是一组按照某种标准划分的进程，在 CGroup 这种机制中，所有的资源控制都是以 CGroup 作为单位实现的，每一个进程都可以随时加入一个 CGroup 也可以随时退出一个 CGroup。
+
+Linux 使用文件系统来实现 CGroup
+
+如果我们想要创建一个新的 cgroup 只需要在想要分配或者限制资源的子系统下面创建一个新的文件夹，然后这个文件夹下就会自动出现很多的内容，如果你在 Linux 上安装了 Docker，你就会发现所有子系统的目录下都有一个名为 docker 的文件夹
+
+Docker 在使用 CGroup 时其实也只是做了一些创建文件夹改变文件内容的文件操作，不过 CGroup 的使用也确实解决了我们限制子容器资源占用的问题，系统管理员能够为多个容器合理的分配资源并且不会出现多个容器互相抢占资源的问题。
+
+
+6、UnionFS
+
+UnionFS 其实是一种为 Linux 操作系统设计的用于把多个文件系统『联合』到同一个挂载点的文件系统服务。而 AUFS 即 Advanced UnionFS 其实就是 UnionFS 的升级版，它能够提供更优秀的性能和效率。
+
+
+Docker 镜像其实本质就是一个压缩包，我们可以使用下面的命令将一个 Docker 镜像中的文件导出：
+$ docker export $(docker create busybox) | tar -C rootfs -xvf -
+$ ls
+bin  dev  etc  home proc root sys  tmp  usr  var
+你可以看到这个 busybox 镜像中的目录结构与 Linux 操作系统的根目录中的内容并没有太多的区别，可以说 Docker 镜像就是一个文件。
+
+
+7、存储驱动
+Docker 使用了一系列不同的存储驱动管理镜像内的文件系统并运行容器，这些存储驱动与 Docker 卷（volume）有些不同，存储引擎管理着能够在多个容器之间共享的存储。
+
+Docker 中的每一个镜像都是由一系列只读的层组成的，Dockerfile 中的每一个命令都会在已有的只读层上创建一个新的层，容器中的每一层都只对当前容器进行了非常小的修改。
+
+当镜像被 docker run 命令创建时就会在镜像的最上层添加一个可写的层，也就是容器层，所有对于运行时容器的修改其实都是对这个容器读写层的修改。
+容器和镜像的区别就在于，所有的镜像都是只读的，而每一个容器其实等于镜像加上一个可读写的层，也就是同一个镜像可以对应多个容器。
+
+Image是只读（OR）的，Container是+一个可读写（RW）的层
+
+
+8、AUFS
+
+UnionFS 其实是一种为 Linux 操作系统设计的用于把多个文件系统『联合』到同一个挂载点的文件系统服务。而 AUFS 即 Advanced UnionFS 其实就是 UnionFS 的升级版，它能够提供更优秀的性能和效率。
+
+AUFS 作为联合文件系统，它能够将不同文件夹中的层联合（Union）到了同一个文件夹中，这些文件夹在 AUFS 中称作分支，整个『联合』的过程被称为联合挂载（Union Mount）：
+
+每一个镜像层或者容器层都是 /var/lib/docker/ 目录下的一个子文件夹；
+在 Docker 中，所有镜像层和容器层的内容都存储在 /var/lib/docker/aufs/diff/ 目录中
+而 /var/lib/docker/aufs/layers/ 中存储着镜像层的元数据，每一个文件都保存着镜像层的元数据，
+最后的 /var/lib/docker/aufs/mnt/ 包含镜像或者容器层的挂载点，
+最终会被 Docker 通过联合的方式进行组装。
+
+每一个镜像层都是建立在另一个镜像层之上的，同时所有的镜像层都是只读的，只有每个容器最顶层的容器层才可以被用户直接读写，所有的容器都建立在一些底层服务（Kernel）上，包括命名空间、控制组、rootfs 等等，这种容器的组装方式提供了非常大的灵活性，只读的镜像层通过共享也能够减少磁盘的占用。
+
+9、其他存储驱动
+AUFS 只是 Docker 使用的存储驱动的一种，除了 AUFS 之外，Docker 还支持了不同的存储驱动，包括 aufs、devicemapper、overlay2、zfs 和 vfs 等等，在最新的 Docker 中，overlay2 取代了 aufs 成为了推荐的存储驱动，但是在没有 overlay2 驱动的机器上仍然会使用 aufs 作为 Docker 的默认驱动。
+  
+不同的存储驱动在存储镜像和容器文件时也有着完全不同的实现
+
+
+
+其实docker是一个内核的搬运工
+所以虽然docker帮助我们准备好了rootfs地址，镜像里面的文件，以及各种资源隔离的配置，但是在启动一个容器的时候，它只是调用系统中早已内置的可以隔离资源的方法，而kernel支持这些方法，也是在创建进程的方法上做了一层资源隔离的扩展而已。
+
+这就解释了docker两个特性：
+启动速度快，因为本质来说容器和进程差别没有想象中的大，共享了很多代码，流程也差的不多
+linux内核版本有最低的要求，因为linux是在某个版本后开始支持隔离特性
+
+
+
+Docker本质上是运行在宿主机上的进程，它通过namespace实现了资源隔离，并通过cgroups实现了资源限制，同时通过写时复制（copy-on-write）实现了高效的文件操作。
+
+Linux内核中提供了6种namespace隔离的系统调用，分别完成对文件系统、网络、进程间通信、主机名、进程号以及用户权限的隔离。
+
+
+关于Docker实现原理，简单总结如下：
+1、使用Namespaces实现了系统环境的隔离，Namespaces允许一个进程以及它的子进程从共享的宿主机内核资源（网络栈、进程列表、挂载点等）里获得一个仅自己可见的隔离区域，让同一个Namespace下的所有进程感知彼此变化，对外界进程一无所知，仿佛运行在一个独占的操作系统中；
+2、使用CGroups限制这个环境的资源使用情况，比如一台16核32GB的机器上只让容器使用2核4GB。使用CGroups还可以为资源设置权重，计算使用量，操控任务（进程或线程）启停等；
+3、使用镜像管理功能，利用Docker的镜像分层、写时复制、内容寻址、联合挂载技术实现了一套完整的容器文件系统及运行环境，再结合镜像仓库，镜像可以快速下载和共享，方便在多环境部署。
+
+
+
+
+
+
+
+
+
 1、网址：
 http://www.ducker.com/
 https://hub.docker.com/
 https://github.com/moby/moby
 https://github.com/docker
+https://docs.docker.com/config/daemon/
 
 
 docker中文社区
@@ -109,10 +256,12 @@ Dockerfile 最佳实践：https://docs.docker.com/articles/dockerfile_best-pract
 
 
 
-
-
-
-
+Docker原理
+https://draveness.me/docker
+https://zhuanlan.zhihu.com/p/22382728
+https://blog.csdn.net/omnispace/article/details/79778724
+https://blog.csdn.net/zhaobryant/article/details/79599432
+https://juejin.im/entry/5b7ae3286fb9a01a087aaa89
 
 
 

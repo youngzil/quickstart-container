@@ -1,3 +1,5 @@
+两种客户端：kubernetes-client和fabric的kubernetes-client
+
 Official Java client library for kubernetes 
 http://kubernetes.io/
 https://github.com/kubernetes-client/java

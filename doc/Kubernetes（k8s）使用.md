@@ -14,7 +14,7 @@ Deployment Controller会持续监视Deployment的这些实例
 有Node Controller，每个Node由 Master管理，Kubernetes Master会自动处理群集中Node的pod调度，同时Master的自动调度会考虑每个Node上的可用资源。
 Replication Controller（RC）是Kubernetes系统中的核心概念，用于定义Pod副本的数量
 
-2、Node节点：本身组件+Pod，运行Kubelet、Proxy和Docker Daemon三个组件，Node上可以有多个pod，是Kubernetes中的工作节点，可以是虚拟机或物理机。
+2、Node节点：本身3组件+Pod，运行Kubelet、Proxy和Docker Daemon三个组件，Node上可以有多个pod，是Kubernetes中的工作节点，可以是虚拟机或物理机。
 
 3、Pod：存储、网络、容器等，由一个或多个容器组合，Pod中的容器共享IP地址和端口、存储Volumes卷、网络等
 
@@ -40,7 +40,7 @@ Kubernetes 1.11.0 发布了，Kubernetes 是一个开源的，用于管理云平
 另外在所有节点上都可以运行Kubectl命令行工具，它提供了Kubernetes的集群管理工具集。
 
 Kubernetes集群由两类节点组成：Master和Node
-1、Master节点：协调和管理的节点，在Master上运行etcd、API Server、Controller Manager和Scheduler四个组件，其中后三个组件构成了Kubernetes的总控中心，负责对集群中所有资源进行管理和调度。
+1、Master节点：协调和管理的节点，负责pod的调度，在Master上运行etcd、API Server、Controller Manager和Scheduler四个组件，其中后三个组件构成了Kubernetes的总控中心，负责对集群中所有资源进行管理和调度。
 Kubernetes Master会自动处理群集中Node的pod调度，同时Master的自动调度会考虑每个Node上的可用资源。
 
 Node Controller对Node进行管理

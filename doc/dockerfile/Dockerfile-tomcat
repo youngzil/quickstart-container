@@ -1,0 +1,33 @@
+#pull down centos image
+FROM centos:7
+
+MAINTAINER  yangzl<youngzil@163.com>
+
+#copy jdk and tomcat into image
+#COPY jdk-8u192-linux-x64.tar.gz /root
+#COPY apache-tomcat-9.0.14.tar.gz /root
+
+#WORKDIR /root
+#RUN tar -xzvf jdk-8u192-linux-x64.tar.gz && rm jdk-8u192-linux-x64.tar.gz 
+#RUN tar -xzvf apache-tomcat-9.0.14.tar.gz && rm apache-tomcat-9.0.14.tar.gz
+
+#使用ADD就可以了，相当于上面的COPY + tar + rm
+ADD jdk-8u192-linux-x64.tar.gz /root
+ADD apache-tomcat-9.0.14.tar.gz /root
+
+#set environment variable
+ENV JAVA_HOME /root/jdk1.8.0_192
+ENV PATH $JAVA_HOME/bin:$PATH
+
+#define entry point which will be run first when the container starts up
+ENTRYPOINT /root/apache-tomcat-9.0.14/bin/startup.sh && tail -F /root/apache-tomcat-9.0.14/logs/catalina.out
+
+#docker build -t quickstart/tomcat:9.0.14 .
+
+#docker run -it -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9.0.14
+#docker run -d -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9.0.14 sh startup.sh
+#docker run -it -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9.0.14 sh startup.sh
+#docker exec -it quickstart-tomcat /bin/bash 
+
+#原文：https://blog.csdn.net/qq_24557827/article/details/73729913
+

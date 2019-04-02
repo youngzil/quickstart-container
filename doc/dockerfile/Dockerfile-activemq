@@ -1,0 +1,34 @@
+FROM centos:7
+MAINTAINER  yangzl<youngzil@163.com>
+
+#COPY jdk-8u192-linux-x64.tar.gz /opt
+#COPY apache-activemq-5.15.9-bin.tar.gz /opt
+
+#WORKDIR /opt/
+#RUN tar -xzvf jdk-8u192-linux-x64.tar.gz && rm jdk-8u192-linux-x64.tar.gz 
+#RUN tar -xzvf apache-activemq-5.15.9-bin.tar.gz && rm apache-activemq-5.15.9-bin.tar.gz 
+
+#使用ADD就可以了，相当于上面的COPY + tar + rm
+ADD jdk-8u192-linux-x64.tar.gz /opt
+ADD apache-activemq-5.15.9-bin.tar.gz /opt
+
+#RUN ls -l /opt/ |awk '/^d/ {print $NF}' ## 其实同方法一，直接就可以显示不用for循环
+
+#set environment variable
+ENV ACTIVEMQ_HOME /opt/apache-activemq-5.15.9
+ENV JAVA_HOME /opt/jdk1.8.0_192
+ENV PATH $JAVA_HOME/bin:$PATH
+
+RUN chmod +x ${ACTIVEMQ_HOME}/bin/activemq 
+#define entry point which will be run first when the container starts up
+#CMD ["/opt/apache-activemq-5.15.9/bin/activemq", "start"] #启动tomcat shell执行程序
+
+ENTRYPOINT /opt/apache-activemq-5.15.9/bin/activemq start && /bin/bash
+# 下面这种方式会导致运行完容器后直接退出
+# ENTRYPOINT /opt/apache-activemq-5.15.9/bin/activemq start & 
+
+#docker build -t quickstart/activemq:5.15.9 .
+
+#docker run -it -p 61616:61616 -p 8161:8161 --name quickstart-activemq  quickstart/activemq:5.15.9 
+#docker run -it -p 61616:61616 -p 8161:8161 --name quickstart-activemq  quickstart/activemq:5.15.9 sh /opt/apache-activemq-5.15.9/bin/activemq start
+

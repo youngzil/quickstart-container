@@ -1,8 +1,9 @@
-Docker命令行：
+Docker命令包括：
 Docker本身
 Docker镜像
 Docker容器:容器日志查看
 Dockerfile结构和制作
+Docker原理：
 
 
 
@@ -17,41 +18,77 @@ Container标识：Container ID 或者 Container names
 docker本身
 docker version
 docker info
+docker login : 登陆到一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
+docker logout : 登出一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
+
+docker login -u 用户名 -p 密码 SERVER地址
 
 
 
-docker镜像
-docker image ls (docker images)
+docker镜像：显示和搜索，构建和删除，拉取和提交、导入和导出
+docker image ls (docker images)  列出本地镜像，docker images [OPTIONS] [REPOSITORY[:TAG]]
 docker search image名字
-docker pull Image标识
+docker history runoob/ubuntu:v3  查看指定镜像的创建历史。
+
 
 构建、修改内容和tag、提交、导入导出、删除image
 docker build -t mynginx:0.1 .(Dockerfile 所在的路径,当前目录使用.)
 docker build -t="ouruser/sinatra:v2" .(Dockerfile 所在的路径,当前目录使用.)
 docker build -t rocketmqinc/rocketmq:4.4.0 --build-arg version=4.4.0 .    --build-arg传递参数到image
 
-docker commit -m "Added json gem" -a "Docker Newbee" 0b2616b0e5a8 ouruser/sinatra:v2
-docker tag 5db5f8471261 ouruser/sinatra:devel  修改镜像的标签
+docker rmi training/sinatra  移除本地的镜像(有container引用该image，必须先删除container)
 
-拉取和提交、导入和导出，删除
+
+docker commit -m "Added json gem" -a "Docker Newbee" 0b2616b0e5a8 ouruser/sinatra:v2   从容器创建一个新的镜像。
+docker tag 5db5f8471261 ouruser/sinatra:devel  修改镜像的标签
+docker tag ubuntu:15.10 runoob/ubuntu:v3
+
+
+拉取和提交、导入和导出
 docker pull Image标识
-docker push ouruser/sinatra  把自己创建的镜像上传到仓库中来共享
+docker pull -a java   拉取所有镜像
+docker push ouruser/sinatra  把自己创建的镜像上传到仓库中来共享，将本地的镜像上传到镜像仓库,要先登陆到镜像仓库
 docker save -o ubuntu_14.04.tar ubuntu:14.04  导出镜像到本地文件
 docker load --input ubuntu_14.04.tar (或docker load < ubuntu_14.04.tar)  从导出的本地文件中再导入到本地镜像库,这将导入镜像以及其相关的元数据信息（包括标签等）
-docker rmi training/sinatra  移除本地的镜像(有container引用该image，必须先删除container)
 
 
 docker save -o ubuntu_14.04.tar ubuntu:14.04
 docker load < ubuntu_14.04.tar
 
 
+docker import  my_ubuntu_v3.tar runoob/ubuntu:v4  
 
-docker容器
+
+docker save 导出image的
+docker export 导出container的
+
+docker load 和docker import 都是导入本地image的，一个是从save的image导入，一个是从export的container导入
+
+总结一下docker save和docker export的区别：
+docker save保存的是镜像（image），docker export保存的是容器（container）；
+docker load用来载入镜像包，docker import用来载入容器包，但两者都会恢复为镜像；
+docker load不能对载入的镜像重命名，而docker import可以为镜像指定新名称。
+
+docker 容器导入导出有两种方法：需要注意两种方法不可混用。
+
+一种是使用 save 和 load 命令
+docker save ubuntu:load>/root/ubuntu.tar
+docker load<ubuntu.tar
+
+一种是使用 export 和 import 命令
+docker export 98ca36> ubuntu.tar
+cat ubuntu.tar | sudo docker import - ubuntu:import
+
+
+
+
+docker容器：显示部分和全部，显示历史和区别
 docker container ls 只会显示运行的容器
 docker container ps
 docker ps -a 显示停止的
 docker ps -n 6   相当于docker ps -a 并且只显示前6行
-docker diff container名字  查看容器区别
+docker ps -a -q  列出所有创建的容器ID。
+docker diff container名字  查看容器区别，检查容器里文件结构的更改。
 docker history nginx:v2	  查看容器历史
 
 运行、进入和退出Container
@@ -69,11 +106,15 @@ docker run -d -p 10911:10911 -p 10909:10909 -v `pwd`/data/broker/logs:/root/logs
 #如果在最后一行有CMD，执行docker run的时候最后就不能带执行脚本参数
 
 
+docker create ：创建一个新的容器但不启动它，用法同 docker run
+docker create  --name myrunoob  nginx:latest  
+
+
 exit 命令或 Ctrl+d 来退出终端
 docker attach nostalgic_hypatia   当多个窗口同时使用该命令进入该容器时，所有的窗口都会同步显示。如果有一个窗口阻塞了，那么其他窗口也无法再进行操作。
 docker exec -it 775c7c9ee1e1 /bin/bash  
 docker exec -it mynginx /bin/sh /root/runoob.sh  在容器mynginx中以交互模式执行容器内/root/runoob.sh脚本
-docker exec -ti rmqbroker sh ./tools.sh org.apache.rocketmq.example.quickstart.Producer  进入rmqbroker容器以交互模式执行容器内Producer脚本
+docker exec -it rmqbroker sh ./tools.sh org.apache.rocketmq.example.quickstart.Producer  进入rmqbroker容器以交互模式执行容器内Producer脚本
 docker exec -it rmqbroker ./mqadmin clusterList -n 10.21.38.83:9876
 
 
@@ -85,6 +126,44 @@ docker container start|stop|restart 容器标识（容器ID或容器名字）
 docker container rm docker-demo
 docker container pause
 docker container unpause
+
+docker kill :杀掉一个运行中的容器。-s :向容器发送一个信号
+docker kill -s KILL mynginx 
+
+
+docker rm -f db01 db02  强制删除
+docker rm -l db  删除到容器的链接，不是删除容器
+
+
+docker inspect : 获取容器/镜像的元数据。
+docker inspect mysql:5.6
+docker inspect ab00f544b507
+
+
+docker top quickstart-tomcat   查看容器中运行的进程信息，支持 ps 命令参数。
+
+查看所有运行容器的进程信息。
+for i in  `docker ps |grep Up|awk '{print $1}'`;do echo \ &&docker top $i; done
+
+
+
+docker cp :用于容器与主机之间的数据拷贝。
+docker cp src dest
+
+将主机/www/runoob目录拷贝到容器96f7f14e99ab的/www目录下。
+docker cp /www/runoob 96f7f14e99ab:/www/
+
+将主机/www/runoob目录拷贝到容器96f7f14e99ab中，目录重命名为www。
+docker cp /www/runoob 96f7f14e99ab:/www
+
+将容器96f7f14e99ab的/www目录拷贝到主机的/tmp目录中。
+docker cp  96f7f14e99ab:/www /tmp/
+
+
+docker commit :从容器创建一个新的镜像。
+docker commit -m "Added json gem" -a "Docker Newbee" 0b2616b0e5a8 ouruser/sinatra:v2   从容器创建一个新的镜像。
+docker tag 5db5f8471261 ouruser/sinatra:devel  修改镜像的标签
+
 
 
 Docker stop停止/remove删除所有容器
@@ -105,11 +184,21 @@ docker logs Container标识
 docker port Container标识 [端口] 来查看当前映射的端口配置，也可以查看到绑定的地址
 docker inspect 44fc0f0582d9   查看该容器的详细信息
 
+docker logs -f mynginx
+查看容器mynginx从2016年7月1日后的最新10条日志。
+docker logs --since="2016-07-01" --tail=10 mynginx
+
+docker port :列出指定的容器的端口映射，或者查找将PRIVATE_PORT NAT到面向公众的端口。
+
+
+
+
 
 导出和导入容器
 docker export 7691a814370e > ubuntu.tar
 cat ubuntu-14.04-x86_64-minimal.tar.gz  |docker import - ubuntu:14.04  下载了一个 ubuntu-14.04 的镜像，之后使用以下命令导入
 
+docker export -o mysql-`date +%Y%m%d`.tar a404c6c174a2
 
 
 

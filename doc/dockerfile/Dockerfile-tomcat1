@@ -28,10 +28,10 @@ CMD ["/opt/tomcat/9/apache-tomcat-9.0.14/bin/catalina.sh", "run"] #启动tomcat 
 #exec ${CATALINA_HOME}/bin/catalina.sh run
 
 
-#docker build -t quickstart/tomcat:9 .
-#docker run -it -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9
-#docker run -d -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9 sh startup.sh
-#docker run -it -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9 sh startup.sh
+#docker build -t quickstart/tomcat:9.0.14 .
+#docker run -it -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9.0.14
+#docker run -d -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9.0.14 sh startup.sh
+#docker run -it -p 8081:8080 --name quickstart-tomcat  quickstart/tomcat:9.0.14 sh startup.sh
 #docker exec -it quickstart-tomcat /bin/bash 
 
 
