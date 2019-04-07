@@ -12,6 +12,9 @@ limitations under the License.
 */
 package org.quickstart.kubernetes.client;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.Configuration;
@@ -19,27 +22,35 @@ import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.models.V1Pod;
 import io.kubernetes.client.models.V1PodList;
 import io.kubernetes.client.util.Config;
-import java.io.IOException;
 
 /**
  * A simple example of how to use the Java API
  *
- * <p>Easiest way to run this: mvn exec:java
- * -Dexec.mainClass="io.kubernetes.client.examples.Example"
+ * <p>
+ * Easiest way to run this: mvn exec:java -Dexec.mainClass="io.kubernetes.client.examples.Example"
  *
- * <p>From inside $REPO_DIR/examples
+ * <p>
+ * From inside $REPO_DIR/examples
  */
 public class Example {
-  public static void main(String[] args) throws IOException, ApiException {
-    ApiClient client = Config.defaultClient();
-    Configuration.setDefaultApiClient(client);
+    public static void main(String[] args) throws IOException, ApiException {
 
-    CoreV1Api api = new CoreV1Api();    
-    
-    V1PodList list =
-        api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
-    for (V1Pod item : list.getItems()) {
-      System.out.println(item.getMetadata().getName());
+        /*String fileName = "classpath:/k8s/kubectl.kubeconfig";
+        InputStream inputStream = ResourceRenderer.resourceLoader(fileName);
+        ApiClient client = Config.fromConfig(inputStream);
+        // 五分钟
+        client.setConnectTimeout(5 * 60 * 1000);
+        Configuration.setDefaultApiClient(client);*/
+
+        ApiClient client = Config.defaultClient();
+        Configuration.setDefaultApiClient(client);
+
+        CoreV1Api api = new CoreV1Api();
+
+        V1PodList list =
+                api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
+        for (V1Pod item : list.getItems()) {
+            System.out.println(item.getMetadata().getName());
+        }
     }
-  }
 }

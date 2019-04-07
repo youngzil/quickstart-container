@@ -114,7 +114,8 @@ Sidecar模式 边车模式
 参考
 https://www.jianshu.com/p/e7140103fb39
 https://infoq.cn/article/pattern-service-mesh
-
+https://www.infoq.cn/article/istio-future-service-mesh
+http://ifeve.com/istio-overview/
 
 
 
@@ -126,6 +127,10 @@ https://istio.io/zh/
 https://github.com/istio/
 https://github.com/istio/community
 
+
+服务网格中文社区
+http://www.servicemesher.com/
+https://www.sofastack.tech/sofa-mesh/docs/Home
 
 
 

@@ -3,6 +3,8 @@
 Docker的核心能力：docker-compose、docker-machine、docker-swarm
 3、核心概念：镜像、容器与仓库
 4、Docker 安装、运行与加速
+Docker命令
+Docker-compose配置、部署docker容器
 5、镜像的获取与使用： commit 命令 和 Dockerfile 定制镜像
 Docker基本架构： C/S架构，包括客户端和服务端
 ocker 的基础是 Linux 容器（LXC）等虚拟化技术
@@ -242,7 +244,7 @@ docker教程学习参考
 http://wiki.jikexueyuan.com/project/docker-technology-and-combat/appendix_useful.html
 https://yeasy.gitbooks.io/docker_practice/image/build.html
 http://www.ruanyifeng.com/blog/2018/02/docker-tutorial.html
-
+https://yeasy.gitbooks.io/docker_practice/introduction/what.html
 
 
 有用资源

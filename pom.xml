@@ -24,7 +24,7 @@
 	<modules>
 		<module>quickstart-pouch</module>
 		<module>quickstart-kubernetes</module>
-    <module>quickstart-docker</module>
-  </modules>
+		<module>quickstart-docker</module>
+	</modules>
 
 </project>

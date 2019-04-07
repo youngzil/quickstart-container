@@ -3,6 +3,7 @@ Kubernetes的几个核心组件
 K8s的安装：kubectl、minikube
 minikube的使用：命令行，部署k8s集群
 kubectl使用：命令行，运行Docker容器等，Kubernetes API是系统描述性配置的基础。 Kubectl 命令行工具被用于创建、更新、删除、获取API对象。
+Kubernetes的yaml配置文件
 
 
 
@@ -211,6 +212,9 @@ minikube stop
 
 
 kubectl使用：
+kubectl version
+
+kubectl create -f deployment.yaml
 kubectl apply -f install/kubernetes/istio-demo.yaml  安装 Istio 的自定义资源定义（CRD）
 kubectl delete -f install/kubernetes/istio-demo.yaml
 
@@ -251,6 +255,17 @@ describe       显示一个指定 resource 或者 group 的 resources 详情
   
 
 
+我使用kubectl replace deployment对象 但是pod没有更新 有人知道咋回事么
+--cascade=true replace 后面加个参数解决pod不更新问题
+
+
+
+
+Kubernetes的yaml配置文件
+
+
+
+
 
 
 
@@ -278,8 +293,33 @@ https://www.bookstack.cn/read/kubernetes-handbook/SUMMARY.md
 Kubernetes中文手册
 http://docs.kubernetes.org.cn/124.html
 https://www.kubernetes.org.cn/docs
+https://www.kubernetes.org.cn/docs
 http://docs.kubernetes.org.cn/
 https://kubernetes.io/zh/docs/tutorials/
+https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/
+https://kubernetes.io/zh/docs/tasks/access-application-cluster/list-all-running-container-images/
+
+
+
+
+Kubernetes的yaml配置文件
+https://blog.csdn.net/wucong60/article/details/81161360
+https://blog.csdn.net/xuleisdjn/article/details/79023487
+https://blog.csdn.net/phantom_111/article/details/79427144
+https://www.qikqiak.com/post/use-yaml-create-kubernetes-deployment/
+https://www.kubernetes.org.cn/1414.html
+https://blog.csdn.net/zll_0405/article/details/85222443
+https://www.cnblogs.com/xiaochangwei/p/9165653.html
+
+
+
+
+Kubernetes的三种外部访问方式：NodePort、LoadBalancer和Ingress
+https://blog.csdn.net/M2l0ZgSsVc7r69eFdTj/article/details/79988685
+
+
+
+
 
 
 kubernetes 对比 mesos + marathon

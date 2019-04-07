@@ -1,0 +1,12 @@
+FROM nginx
+COPY html/* /usr/share/nginx/html
+
+
+#html/index.html文件的内容
+#<h1>Hello Docker!--yangzl</h1>
+
+
+#docker build -t quickstart/nginx:1.0.0 .
+
+#docker run -it -p 80:80 --name quickstart-nginx  quickstart/nginx:1.0.0 
+#docker run -p 80:80 --name mynginx -v $PWD/www:/www -v $PWD/conf/nginx.conf:/etc/nginx/nginx.conf -v $PWD/logs:/wwwlogs  -d nginx  
