@@ -19,7 +19,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 /**
  * Fabric8KubernetesClientTest
  * 
- * @author：yangzl@asiainfo.com
+ * @author：youngzil@163.com
  * @2019年4月3日 下午3:33:51
  * @since 1.0
  */

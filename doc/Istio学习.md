@@ -124,8 +124,10 @@ http://ifeve.com/istio-overview/
 官网
 https://istio.io/
 https://istio.io/zh/
+https://istio.io/docs/
 https://github.com/istio/
 https://github.com/istio/community
+
 
 
 服务网格中文社区

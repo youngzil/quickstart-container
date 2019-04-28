@@ -26,7 +26,7 @@ import com.github.dockerjava.core.command.EventsResultCallback;
 /**
  * Test
  * 
- * @author：yangzl@asiainfo.com
+ * @author：youngzil@163.com
  * @2019年4月1日 下午12:42:43
  * @since 1.0
  */

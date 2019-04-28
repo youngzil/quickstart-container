@@ -18,7 +18,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 /**
  * K8sApiService
  * 
- * @author：yangzl@asiainfo.com
+ * @author：youngzil@163.com
  * @2019年3月28日 下午4:32:29
  * @since 1.0
  */

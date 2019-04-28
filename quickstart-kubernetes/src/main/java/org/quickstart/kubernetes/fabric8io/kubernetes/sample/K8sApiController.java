@@ -19,7 +19,7 @@ import io.swagger.annotations.ApiOperation;
 /**
  * K8sApiController
  * 
- * @author：yangzl@asiainfo.com
+ * @author：youngzil@163.com
  * @2019年3月28日 下午5:10:50
  * @since 1.0
  */

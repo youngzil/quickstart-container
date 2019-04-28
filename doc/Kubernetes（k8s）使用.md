@@ -3,7 +3,7 @@ Kubernetes的几个核心组件
 K8s的安装：kubectl、minikube
 minikube的使用：命令行，部署k8s集群
 kubectl使用：命令行，运行Docker容器等，Kubernetes API是系统描述性配置的基础。 Kubectl 命令行工具被用于创建、更新、删除、获取API对象。
-Kubernetes的yaml配置文件
+Kubernetes的yaml配置文件：Service和Deployment
 
 
 
@@ -220,6 +220,7 @@ kubectl delete -f install/kubernetes/istio-demo.yaml
 
 kubectl get svc -n istio-system   查看服务在stio-system 命名空间
 kubectl get pods -n istio-system   查看pod
+kubectl get deployments
 
 
 kubectl get cs（componentstatuses）
@@ -233,7 +234,6 @@ kubectl get - 列出资源
 kubectl describe - 显示资源的详细信息
 kubectl logs - 打印pod中的容器日志
 kubectl exec - pod中容器内部执行命令
-
 
 
 kubectl get  查看
@@ -257,6 +257,27 @@ describe       显示一个指定 resource 或者 group 的 resources 详情
 
 我使用kubectl replace deployment对象 但是pod没有更新 有人知道咋回事么
 --cascade=true replace 后面加个参数解决pod不更新问题
+
+运行一个镜像
+kubectl run sonarqube --image=192.168.32.131:5000/sonarqube:5.6.5 --replicas=1 --port=9000
+
+使用kubectl delete删除：可以删除pod或者deployment，直接删除pod触发了replicas的确保机制，也就是删除的同时会重新创建一个
+kubectl delete pods sonarqube-1880671902-s3fdq   
+kubectl delete deployment sonarqube
+
+
+kubectl get ns
+kubectl create namespace test
+kubectl delete namespace test
+kubectl edit namespace test
+
+
+
+kubectl get deployments  -n istio-system
+kubectl get svc -n istio-system
+kubectl get pods -n istio-system
+
+
 
 
 
@@ -287,6 +308,20 @@ https://kubernetes.io/docs/tasks/tools/install-kubectl/
 https://www.jianshu.com/p/63ffc2214788
 https://www.kubernetes.org.cn/kubernetes%E8%AE%BE%E8%AE%A1%E6%9E%B6%E6%9E%84
 https://www.bookstack.cn/read/kubernetes-handbook/SUMMARY.md
+
+
+Kubernetes使用示例
+https://github.com/kubernetes/examples
+https://github.com/kubernetes/client-go
+
+
+
+Kubernetes之kubectl常用命令
+https://blog.csdn.net/liumiaocn/article/details/73913597
+
+Kubernetes--命名空间（Namespace）
+https://blog.csdn.net/wang725/article/details/82845070
+https://blog.csdn.net/ouyangtianhan/article/details/85107967
 
 
 

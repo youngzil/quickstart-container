@@ -20,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * K8sApiSwagger
  * 
- * @author：yangzl@asiainfo.com
+ * @author：youngzil@163.com
  * @2019年3月28日 下午5:05:38
  * @since 1.0
  */

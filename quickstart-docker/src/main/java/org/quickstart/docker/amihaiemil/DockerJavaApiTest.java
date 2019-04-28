@@ -21,7 +21,7 @@ import com.amihaiemil.docker.RemoteDocker;
 /**
  * DockerJavaApiTest
  * 
- * @author：yangzl@asiainfo.com
+ * @author：youngzil@163.com
  * @2019年4月1日 下午2:41:24
  * @since 1.0
  */
