@@ -4,9 +4,27 @@ K8s的安装：kubectl、minikube
 minikube的使用：命令行，部署k8s集群
 kubectl使用：命令行，运行Docker容器等，Kubernetes API是系统描述性配置的基础。 Kubectl 命令行工具被用于创建、更新、删除、获取API对象。
 Kubernetes的yaml配置文件：Service和Deployment
+K8S的API
 
 
 
+
+
+---------------------------------------------------------------------------------------------------------------------
+https://www.jianshu.com/p/14bcb8664c3f
+
+Kubernetes的几个核心组件
+
+Namespaces
+
+Deployment
+Pods
+ReplicaSet（RS，副本集）
+Services
+
+
+Master：
+Nodes：
 
 
 1、Master：运行四个组件等，常用的Controller，运行的组件etcd、API Server、Controller Manager和Scheduler四个组件
@@ -32,7 +50,7 @@ Replication Controller（RC）是Kubernetes系统中的核心概念，用于定�
 创建了一个Deployment，然后通过Service暴露，Deployment创建的Pod来运行应用
 
 
-
+---------------------------------------------------------------------------------------------------------------------
 Kubernetes基本概念和术语：
 
 Kubernetes 1.11.0 发布了，Kubernetes 是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes 的目标是让部署容器化的应用简单并且高效（powerful），Kubernetes 提供了应用部署、规划、更新、维护的一种机制。
@@ -139,7 +157,8 @@ Kubernetes主要由以下几个核心组件组成：
 
 
 
-
+---------------------------------------------------------------------------------------------------------------------
+K8s的安装：kubectl、minikube
 
 Kubernetes API是系统描述性配置的基础。 Kubectl 命令行工具被用于创建、更新、删除、获取API对象。
 kubectl安装：
@@ -185,6 +204,9 @@ git checkout aliyun-v0.25.0
 make
 sudo cp out/minikube /usr/local/bin/
 
+
+minikube的使用
+
 启动
 缺省Minikube使用VirtualBox驱动来创建Kubernetes本地环境
 minikube start --registry-mirror=https://registry.docker-cn.com
@@ -206,7 +228,6 @@ minikube stop
 
 卸载
 删除~/.minikube和/usr/local/bin/minikube
-
 
 
 
@@ -278,20 +299,48 @@ kubectl get svc -n istio-system
 kubectl get pods -n istio-system
 
 
-
-
-
-
+---------------------------------------------------------------------------------------------------------------------
 Kubernetes的yaml配置文件
 
 
+---------------------------------------------------------------------------------------------------------------------
+K8S的API：
+
+1、Node相关接口
+关于Node相关的接口的REST路径为：/api/v1/proxy/nodes/{name}，其中{name}为节点的名称或IP地址。
+/api/v1/proxy/nodes/{name}/pods/    #列出指定节点内所有Pod的信息
+/api/v1/proxy/nodes/{name}/stats/   #列出指定节点内物理资源的统计信息
+/api/v1/prxoy/nodes/{name}/spec/    #列出指定节点的概要信息
+
+这里获取的Pod信息来自Node而非etcd数据库，两者时间点可能存在偏差。如果在kubelet进程启动时加–enable-debugging-handles=true参数，那么kubernetes Proxy API还会增加以下接口：
+/api/v1/proxy/nodes/{name}/run      #在节点上运行某个容器
+/api/v1/proxy/nodes/{name}/exec     #在节点上的某个容器中运行某条命令
+/api/v1/proxy/nodes/{name}/attach   #在节点上attach某个容器
+/api/v1/proxy/nodes/{name}/portForward   #实现节点上的Pod端口转发
+/api/v1/proxy/nodes/{name}/logs     #列出节点的各类日志信息
+/api/v1/proxy/nodes/{name}/metrics  #列出和该节点相关的Metrics信息
+/api/v1/proxy/nodes/{name}/runningpods  #列出节点内运行中的Pod信息
+/api/v1/proxy/nodes/{name}/debug/pprof  #列出节点内当前web服务的状态，包括CPU和内存的使用情况
+
+
+2、Pod相关接口
+/api/v1/proxy/namespaces/{namespace}/pods/{name}/{path:*}      #访问pod的某个服务接口
+/api/v1/proxy/namespaces/{namespace}/pods/{name}               #访问Pod
+#以下写法不同，功能一样
+/api/v1/namespaces/{namespace}/pods/{name}/proxy/{path:*}      #访问pod的某个服务接口
+/api/v1/namespaces/{namespace}/pods/{name}/proxy               #访问Pod
+
+
+3、Service相关接口
+/api/v1/proxy/namespaces/{namespace}/services/{name}
+
+Pod的proxy接口的作用：在kubernetes集群之外访问某个pod容器的服务（HTTP服务），可以用Proxy API实现，这种场景多用于管理目的，比如逐一排查Service的Pod副本，检查哪些Pod的服务存在异常问题。
 
 
 
 
 
-
-
+---------------------------------------------------------------------------------------------------------------------
 
 https://github.com/Aliyun
 https://github.com/AliyunContainerService
@@ -370,7 +419,7 @@ https://www.jianshu.com/p/c734a3fe205b
 
 
 
-
+---------------------------------------------------------------------------------------------------------------------
 
 CKA全称为（Certificated Kubernetes Administrator）即为官方认证的Kubernetes管理员。
 CNCF云原生计算基金会：认证机构为Linux Foundation组织旗下的Cloud Native Computing Foundatin组织。
@@ -389,4 +438,4 @@ https://mp.weixin.qq.com/s?__biz=MzIzNjUxMzk2NQ==&mid=2247489859&idx=1&sn=5c15ac
 
 
 
-
+---------------------------------------------------------------------------------------------------------------------
