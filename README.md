@@ -1,5 +1,17 @@
-原项目地址
-https://gitee.com/youngzil/quickstart-all
+项目地址
+https://github.com/youngzil/quickstart-container
+
+
+
+https://www.docker.com/
+https://docs.docker.com/
+
+
+
+http://gcr.io/
+http://qury.io/
+https://developer.aliyun.com/hub#/?_k=cc7hrg
+https://hub.helm.sh/
 
 
 
@@ -24,5 +36,18 @@ https://www.itslide.com/
 https://github.com/rootsongjc/awesome-cloud-native
 
 https://github.com/alipay/sofa-mosn
+
+https://github.com/findsec-cn/k201
+
+每周文章
+https://kubeweekly.io/2019/11/16/kubeweekly-193/
+
+https://github.com/vmware-tanzu/antrea/
+
+https://github.com/Gozap/gdns
+
+
+
+
 
 

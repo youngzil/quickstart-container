@@ -3,7 +3,7 @@
  * 文件名：K8sApiSwagger.java
  * 版本信息：
  * 日期：2019年3月28日
- * Copyright asiainfo Corporation 2019
+ * Copyright youngzil Corporation 2019
  * 版权所有 *
  */
 package org.quickstart.kubernetes.fabric8io.kubernetes.sample;

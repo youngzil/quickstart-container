@@ -46,6 +46,14 @@ Citadel 通过内置身份和凭证管理赋能强大的服务间和最终用户
 Galley 代表其他的 Istio 控制平面组件，用来验证用户编写的 Istio API 配置。随着时间的推移，Galley 将接管 Istio 获取配置、 处理和分配组件的顶级责任。它将负责将其他的 Istio 组件与从底层平台（例如 Kubernetes）获取用户配置的细节中隔离开来。
 
 
+英语单词
+Envoy：使者、全权公使
+Mixer：搅拌器、混合器
+Pilot：领航员、宇航员、飞行员
+Citadel：城堡、大本营、避难处
+Galley：船上的厨房、单层甲板的大帆船
+
+
 
 Istio的安装
 1、手动下载并且解压缩 或者 在macOS 或者 Linux 系统中，还可以运行下面的命令，进行下载和自动解压缩：curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.1.1 sh -
