@@ -1,3 +1,4 @@
+```
 1、一个 function 应该只做一件事
 2、不让 function 调用其他 function：调用其他 function 的 function 是一种反模式。
 3、尽可能少在 function 中使用额外的库：代码越多，冷启动的速度就越慢，引入多余的代码，多余的代码不仅不会被运行，还会带来安全风险。

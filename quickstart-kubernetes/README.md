@@ -2,6 +2,7 @@
 
 Official Java client library for kubernetes 
 http://kubernetes.io/
+https://kubernetes.io/zh/
 https://github.com/kubernetes-client/java
 
 

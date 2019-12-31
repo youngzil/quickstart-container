@@ -1,9 +1,16 @@
+```
 Service Mesh服务网格定义
 Istio的功能
 Istio的架构：数据平面、控制平面，各有什么组件
 Istio的安装
 三种微服务落地的利器：Docker容器、Kubernetes、Service Mesh服务网格Istio
 微服务治理框架：传统的Spring cloud、dubbo等、Service Mesh服务网格方式和Istio
+
+
+
+
+https://www.servicemesher.com/istio-handbook/concepts-and-principle/sidecar-injection-deep-dive.html
+https://skyao.io/post/201809-xprotocol-common-address-solution/
 
 
 

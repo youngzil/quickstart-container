@@ -1,3 +1,4 @@
+```
 k8s的CRD
 Kubernetes 资源分配之Request 和Limit 
 
@@ -352,6 +353,8 @@ https://github.com/Aliyun
 https://github.com/AliyunContainerService
 
 
+https://k8s.io/docs/tasks
+
 
 Kubernetes介绍
 https://kubernetes.io
@@ -445,3 +448,16 @@ https://mp.weixin.qq.com/s?__biz=MzIzNjUxMzk2NQ==&mid=2247489859&idx=1&sn=5c15ac
 
 
 ---------------------------------------------------------------------------------------------------------------------
+
+K8S问题查询流程
+https://learnk8s.io/troubleshooting-deployments
+/Users/yangzl/git/quickstart-container/docs/kubernetes/troubleshooting-kubernetes.pdf
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
