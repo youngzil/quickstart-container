@@ -3,6 +3,13 @@ https://github.com/youngzil/quickstart-container
 
 
 
+云原生（Cloud Native）的定义
+https://jimmysong.io/kubernetes-handbook/cloud-native/cloud-native-definition.html
+
+
+
+https://www.infoq.com/news/2020/01/servicemeshcon-2019/?from=timeline
+
 http://gcr.io/
 http://qury.io/
 https://developer.aliyun.com/hub#/?_k=cc7hrg

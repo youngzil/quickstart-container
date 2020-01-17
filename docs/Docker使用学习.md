@@ -1,4 +1,3 @@
-```
 1、Docker 简介，什么是 Docker？为什么使用Docker（优缺点）？
 2、Docker 和虚拟机的区别与特点
 Docker的核心能力：docker-compose、docker-machine、docker-swarm

@@ -1,4 +1,4 @@
-```
+
 Docker命令包括：
 Docker本身
 Docker镜像
@@ -48,6 +48,17 @@ docker tag ubuntu:15.10 runoob/ubuntu:v3
 拉取和提交、导入和导出
 docker pull Image标识
 docker pull -a java   拉取所有镜像
+docker pull ubuntu:12.04
+docker pull registry.hub.docker.com/ubuntu:12.04
+docker pull dl.dockerpool.com:5000/ubuntu:12.04
+该命令实际上相当于 $ sudo docker pull registry.hub.docker.com/ubuntu:12.04 命令，即从注册服务器 registry.hub.docker.com 中的 ubuntu 仓库来下载标记为 12.04 的镜像。
+
+docker并没有提供一个直接的命令可以查询远程仓库的标签信息，但是提供的一个网页进行查询：
+查询URL为：  https://registry.hub.docker.com/v1/repositories/【镜像名】/tags
+比如 centos 的所有镜像标签查询url为：
+https://registry.hub.docker.com/v1/repositories/centos/tags
+
+
 docker push ouruser/sinatra  把自己创建的镜像上传到仓库中来共享，将本地的镜像上传到镜像仓库,要先登陆到镜像仓库
 docker save -o ubuntu_14.04.tar ubuntu:14.04  导出镜像到本地文件
 docker load --input ubuntu_14.04.tar (或docker load < ubuntu_14.04.tar)  从导出的本地文件中再导入到本地镜像库,这将导入镜像以及其相关的元数据信息（包括标签等）
@@ -79,6 +90,19 @@ docker load<ubuntu.tar
 一种是使用 export 和 import 命令
 docker export 98ca36> ubuntu.tar
 cat ubuntu.tar | sudo docker import - ubuntu:import
+
+
+把tar文件镜像导入本地镜像仓库  
+docker load -i msptest.tar  
+  
+运行  
+docker run -it registry.yw.zj.chinamobile.com/x86ddpt-ywjx/rwdd_account:20181019111707993112826 bash   
+  
+yangzl:docker yangzl$ vi Dockfile  
+yangzl:docker yangzl$ more Dockfile  
+FROM registry.yw.zj.chinamobile.com/x86ddpt-ywjx/rwdd_account:20181019111707993112826  
+ADD xxx.tgz /app/pkg  
+  
 
 
 
