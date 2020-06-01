@@ -24,6 +24,8 @@ https://skyao.io/
 
 Kubernetes中文网
 http://www.k8smeetup.com/
+https://www.kubernetes.org.cn/tags/devops
+
 
 云计算社区
 https://www.yunforum.net/
