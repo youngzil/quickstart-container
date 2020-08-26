@@ -1,4 +1,3 @@
-```
 k8s的CRD
 Kubernetes 资源分配之Request 和Limit 
 

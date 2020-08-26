@@ -2,7 +2,7 @@
 2、Docker 和虚拟机的区别与特点
 Docker的核心能力：docker-compose、docker-machine、docker-swarm
 3、核心概念：镜像、容器与仓库
-4、Docker 安装、运行与加速
+4、Docker 安装、运行与加速：Docker安装.md
 Docker命令
 Docker-compose配置、部署docker容器
 5、镜像的获取与使用： commit 命令 和 Dockerfile 定制镜像
