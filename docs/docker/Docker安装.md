@@ -1,6 +1,6 @@
 1、MacOS安装Docker
 2、CentOS安装Docker
-3、
+3、docker启动命令,docker重启命令,docker关闭命令
 
 
 
@@ -130,6 +130,30 @@ https://www.jianshu.com/p/3a4cd73e3272
 
 ---------------------------------------------------------------------------------------------------------------------
 
+
+docker官网地址  https://www.docker.com/
+
+docker启动命令,docker重启命令,docker关闭命令
+
+启动        systemctl start docker
+
+守护进程重启   sudo systemctl daemon-reload
+
+重启docker服务   systemctl restart  docker
+
+重启docker服务  sudo service docker restart
+
+关闭docker service docker stop
+
+关闭docker systemctl stop docker
+
+
+
+ docker version
+
+
+
+---------------------------------------------------------------------------------------------------------------------
 
 
 

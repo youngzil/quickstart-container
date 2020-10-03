@@ -1,3 +1,31 @@
+## 容器的介绍
+
+
+### 容器的概念
+
+- Docker
+- LXC
+- KVM
+- Kubernetes（K8S）
+- Marathon马拉松
+- 微服务/Micro Service
+- 服务网格/Service Mesh
+- Istio
+- YARN
+- Mesos
+- 云原生/Cloud Native
+- 无服务器架构/Serverless
+
+
+容器编排框架
+
+
+资源协调/调度
+Mesos/资源调度、资源协调
+YARN/资源协调者
+
+
+
 江湖传言，软件正在吃掉世界，而容器正在吃掉整个软件世界。虽然有些夸张，但也充分证明了容器在当今软件研发领域的地位。顺势而为，是否掌握容器技术也成为很多企业在招聘时的一个重要选项。
 应用程序越来越多的使用微服务，一个应用程序被分为若干个微服务，运行许多微服务可能很复杂，因此管理它们需要一个协调器（有时也称为调度程序），用于跨数据中心发布分布式服务。调度器有很多选择。市面上流行的调度程序有：Mesos（Mesosphere）、Kubernetes（Google）、Docker Swarm（Docker）等。
 
@@ -126,6 +154,26 @@ https://www.infoq.cn/article/oT88vWzjaI2RVjBXcASc
 当资源压力很大时，应用程序的性能远远高于使用虚拟机管理程序的容器。因为使用传统的虚拟化，客户操作系统还必须满足其自身的内存需求，从主机上获取宝贵的RAM。
 维护效率
 只有一个操作系统内核，操作系统级别的更新或补丁只需要执行一次，以使更改在所有容器中生效。这使得服务器的操作和维护更加高效。
+
+
+
+Antrea
+
+基于Open vSwitch的Kubernetes网络
+
+Kubernetes networking based on Open vSwitch
+
+https://antrea.io/  
+https://github.com/vmware-tanzu/antrea/
+
+Antrea是一个Kubernetes网络解决方案，旨在成为Kubernetes的本机。它使用Open vSwitch作为网络数据平面，在Layer3 / 4上运行，为Kubernetes集群提供网络和安全服务 。
+
+Open vSwitch是一种广泛采用的高性能可编程虚拟交换机。Antrea利用它来实现Pod网络和安全功能。例如，Open vSwitch使Antrea能够以非常有效的方式实施Kubernetes网络策略。
+
+
+
+etcdhosts 是一个 CoreDNS 插件，通过将 hosts 配置存储在 etcd 中实现分布式一致性查询  
+https://github.com/Gozap/gdns  
 
 
 

@@ -8,6 +8,11 @@ Istio的安装
 
 
 
+MOSN is a cloud native proxy for edge or service mesh.   
+https://mosn.io  
+https://github.com/alipay/sofa-mosn
+
+
 https://www.servicemesher.com/istio-handbook/concepts-and-principle/sidecar-injection-deep-dive.html
 https://skyao.io/post/201809-xprotocol-common-address-solution/
 

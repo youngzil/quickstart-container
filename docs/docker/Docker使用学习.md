@@ -46,6 +46,22 @@ docker-swarm：swarm 是基于 docker 平台实现的集群技术，他可以通
 
 
 
+Docker 包括三个基本概念:
+
+镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu16.04 最小系统的 root 文件系统。
+
+容器（Container）：镜像（Image）和容器（Container）的关系，就像是面向对象程序设 计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启 动、停止、删除、暂停等。
+
+仓库（Repository）：仓库可看着一个代码控制中心，用来保存镜像。
+Docker 使用客户端-服务器 (C/S) 架构模式，使用远程API来管理和创建Docker容器。
+
+Docker 容器通过 Docker 镜像来创建。
+
+容器与镜像的关系类似于面向对象编程中的对象与类。
+
+
+
+
 Docker 包括三个基本概念
 1、镜像（Image）：Docker 镜像就是一个只读的模板。镜像可以用来创建 Docker 容器。
 2、容器（Container）：Docker 利用容器来运行应用。容器是从镜像创建的运行实例。它可以被启动、开始、停止、删除。每个容器都是相互隔离的、保证安全的平台。
@@ -74,6 +90,35 @@ Dockerfile 由一行行命令语句组成，并且支持以 # 开头的注释行
 Docker 采用了 C/S架构，包括客户端和服务端。 Docker daemon 作为服务端接受来自客户的请求，并处理这些请求（创建、运行、分发容器）。 客户端和服务端既可以运行在一个机器上，也可通过 socket 或者 RESTful API 来进行通信。
 Docker daemon 一般在宿主主机后台运行，等待接收来自客户端的消息。
 Docker 客户端则为用户提供一系列可执行命令，用户用这些命令实现跟 Docker daemon 交互。
+
+
+
+1. Docker 镜像(Images)  
+Docker 镜像是用于创建 Docker 容器的模板。
+
+2. Docker 容器(Container)  
+容器是独立运行的一个或一组应用，是镜像运行时的实体。
+
+3. Docker 客户端(Client)  
+Docker 客户端通过命令行或者其他工具使用 Docker API/SDK 与 Docker 的守护进程通信。
+
+4. Docker 主机(Host)  
+一个物理或者虚拟的机器用于执行 Docker 守护进程和容器。
+
+5. Docker 仓库(Registry)  
+Docker 仓库用来保存镜像，可以理解为代码控制中的代码仓库。提供了庞大的镜像集合供使用。  
+一个 Docker Registry 中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。  
+通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 <仓库名>:<标签> 的格式来指
+定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签。
+
+6. Docker Hub   
+提供了庞大的镜像集合供使用。
+
+7. Docker Machine  
+Docker Machine是一个简化Docker安装的命令行工具，通过一个简单的命令行即可在相应的平台上安装Docker，比如VirtualBox、 Digital Ocean、Microsoft Azure。
+
+
+
 
 
 
