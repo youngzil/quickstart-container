@@ -456,6 +456,7 @@ https://learnk8s.io/troubleshooting-deployments
 
 ---------------------------------------------------------------------------------------------------------------------
 
+[kubernetes中的Pause容器如何理解](https://www.cnblogs.com/guigujun/p/10556508.html)
 
 
 
