@@ -438,7 +438,7 @@ docker bulid -t et-dispatcher:20191118 -f dispatcherDockerfile
 FROM idasound/centos7-jdk8
 ARG CENTER_CODE=TEST
 ARG TYPE=D
-MAINTAINER docker_user songming@asiainfo.com
+MAINTAINER docker_user songming@163.com
 USER aifet
 VOLUME /home/aifet/dispatcher/logs:/app/logs
 ADD scheduler-dispatcher.tar.gz  /app/app

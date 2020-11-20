@@ -99,11 +99,11 @@ cat ubuntu.tar | sudo docker import - ubuntu:import
 docker load -i msptest.tar  
   
 运行  
-docker run -it registry.yw.zj.chinamobile.com/x86ddpt-ywjx/rwdd_account:20181019111707993112826 bash   
+docker run -it registry.yw.zj.test.com/x86ddpt-ywjx/rwdd_account:20181019111707993112826 bash   
   
 yangzl:docker yangzl$ vi Dockfile  
 yangzl:docker yangzl$ more Dockfile  
-FROM registry.yw.zj.chinamobile.com/x86ddpt-ywjx/rwdd_account:20181019111707993112826  
+FROM registry.yw.zj.test.com/x86ddpt-ywjx/rwdd_account:20181019111707993112826  
 ADD xxx.tgz /app/pkg  
   
 

@@ -3,25 +3,25 @@
 
 
 ## 前置工作
-**以浙江为例**
+**以某地项目为例**
 <p>主机列表</p>
 
 ip|主机名|用户|密码
 ---|:--:|---:|---:|
-20.26.85.221|csvz-fwwg01|root
-20.26.85.222|csvz-fwwg02|root
-20.26.85.226|csvz-fwwg06|root
-20.26.85.227|csvz-fwwg07|root
+127.0.0.221|csvz-fwwg01|root
+127.0.0.222|csvz-fwwg02|root
+127.0.0.226|csvz-fwwg06|root
+127.0.0.227|csvz-fwwg07|root
 
-**浙江天玑的镜像仓库编码为registry.yw.zj.chinamobile.com测试环境继续使用该域名，方便docker相关操作**
+**项目的镜像仓库编码为registry.yw.zj.test.com测试环境继续使用该域名，方便docker相关操作**
 修改主机hosts文件（所有主机）
 <p> vi /etc/hosts</p>
 
 ```
-20.26.85.221 csvz-fwwg01 registry.yw.zj.chinamobile.com
-20.26.85.222 csvz-fwwg02
-20.26.85.226 csvz-fwwg06
-20.26.85.227 csvz-fwwg07
+127.0.0.221 csvz-fwwg01 registry.yw.zj.test.com
+127.0.0.222 csvz-fwwg02
+127.0.0.226 csvz-fwwg06
+127.0.0.227 csvz-fwwg07
 ```
 <p>检查防火墙（测试环境可直接选择关闭）（所有主机）
 
@@ -37,7 +37,7 @@ service firewalld stop
 ## DOCKER篇
 **安装docker（集群并带私有仓库）（所有主机）**
 
-docker版本尽量使用 18.06版本(浙江天玑生产版本)
+docker版本尽量使用 18.06版本(某项目生产版本)
 
 ```
 tar -zxvf docker-ce.tar.gz
@@ -117,7 +117,7 @@ docker -v			#查看Docker版本
 
 
 
-**设置docker私有仓库（仅仓库主机，20.26.85.221，不带私钥）**
+**设置docker私有仓库（仅仓库主机，127.0.0.221，不带私钥）**
 
 ```
 #下载仓库注册用容器
@@ -128,10 +128,10 @@ docker pull registry:latest
 
 #生成密钥
 #在 mesh/build/registry 文件夹下，有makecrt.sh
-#输入相关信息后生成新的domain.crt,将该文件复制到 /etc/docker/registry.yw.zj.chinamobile.com
-cp certs/domain.crt  /etc/docker/certs.d/registry.yw.zj.chinamobile.com/ca.crt
+#输入相关信息后生成新的domain.crt,将该文件复制到 /etc/docker/registry.yw.zj.test.com
+cp certs/domain.crt  /etc/docker/certs.d/registry.yw.zj.test.com/ca.crt
 #并将该文件复制到slave主机上
-scp /etc/docker/certs.d/registry.yw.zj.chinamobile.com/ca.crt  root@20.26.85.222:/etc/docker/certs.d/registry.yw.zj.chinamobile.com/
+scp /etc/docker/certs.d/registry.yw.zj.test.com/ca.crt  root@127.0.0.222:/etc/docker/certs.d/registry.yw.zj.test.com/
 
 #在kubernetes安装好之后，再去启动该镜像，最后再重启docker，才能完成docker仓库的安装
 kubectl create namespace middleware
@@ -149,7 +149,7 @@ cd /etc/docker
 vi daemon.json
 # 识别https 默认端口443
 { 
-    "insecure-registries":["register.yw.zj.chinamobile.com"] 
+    "insecure-registries":["register.yw.zj.test.com"] 
 }
 ```
 
@@ -184,14 +184,14 @@ docker load -i k8s-114-images.tar.gz
 docker load -i flannel-dashboard.tar.gz 
 
 #kuneadm安装kubernetes
-kubeadm init --kubernetes-version=v1.14.1 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=20.26.85.22 --token-ttl 0
+kubeadm init --kubernetes-version=v1.14.1 --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address=127.0.0.22 --token-ttl 0
 
 
 #重制kubernetes环境
 kubeadm reset
 
 #记下kubeadm join 方便从节点加入主节点
-kubeadm join 20.26.85.221:6443 --token c8syx4.8pa80idsa9mymc5y \
+kubeadm join 127.0.0.221:6443 --token c8syx4.8pa80idsa9mymc5y \
     --discovery-token-ca-cert-hash sha256:8e8e564ad790b2df8fe240837bd468275db480e21c1f5c3af6e44e0556531c97
 
 #方便使用kubectl命令
@@ -228,7 +228,7 @@ systemctl enable kubelet
 systemctl restart kubelet
 
 #执行 kubeadm join
-kubeadm join 20.26.85.221:6443 --token c8syx4.8pa80idsa9mymc5y \
+kubeadm join 127.0.0.221:6443 --token c8syx4.8pa80idsa9mymc5y \
     --discovery-token-ca-cert-hash sha256:8e8e564ad790b2df8fe240837bd468275db480e21c1f5c3af6e44e0556531c97
     
     
@@ -272,7 +272,7 @@ kubectl describe secret $(kubectl get secret -nkube-system |grep admin|awk '{pri
 chmod +x token.sh
 
 #端口为30000  https要注意
-https://20.26.85.221:30000
+https://127.0.0.221:30000
 
 #浏览器要求
 mac下 给浏览器均可
@@ -454,27 +454,27 @@ systemctl start docker
 
 ```
 #删除异常停止的docker容器
-docker rm `docker ps -a | grep Exited | awk '{print $1}'`   
+docker rm `docker ps -a | grep Exited | awk '{print $1}'` 
 
 #删除名称或标签为none的镜像
-docker rmi -f  `docker images | grep '<none>' | awk '{print $3}'`
+docker rmi -f `docker images | grep '<none>' | awk '{print $3}'`
 
 ```
 
 docker 镜像仓库连接失败
 
 ```
-docker push registry.yw.zj.chinamobile.com/ywdt-istio/proxyv2:1.1.10
+docker push registry.yw.zj.test.com/ywdt-istio/proxyv2:1.1.10
 #报错
-The push refers to repository [registry.yw.zj.chinamobile.com/ywdt-istio/proxyv2]
-Get https://registry.yw.zj.chinamobile.com/v2/: x509: certificate is not valid for any names, but wanted to match registry.yw.zj.chinamobile.com
+The push refers to repository [registry.yw.zj.test.com/ywdt-istio/proxyv2]
+Get https://registry.yw.zj.test.com/v2/: x509: certificate is not valid for any names, but wanted to match registry.yw.zj.test.com
 
 #解决方法在 /etc/docker 下面添加daemon.json
 
 vi  daemon.json
 
 {
-  "insecure-registries": ["registry.yw.zj.chinamobile.com"]
+  "insecure-registries": ["registry.yw.zj.test.com"]
 }
 
 ```
