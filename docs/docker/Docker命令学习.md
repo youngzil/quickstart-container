@@ -1,6 +1,3 @@
-https://github.com/zhangguanzhang/docker-need-to-know/blob/master/SUMMARY.md
-
-
 
 Docker命令包括：
 Docker本身
@@ -8,6 +5,31 @@ Docker镜像
 Docker容器:容器日志查看
 Dockerfile结构和制作
 Docker原理：
+
+
+
+https://github.com/zhangguanzhang/docker-need-to-know/blob/master/SUMMARY.md
+
+
+[Docker run 命令参数及使用](https://www.jianshu.com/p/ea4a00c6c21c)  
+
+
+gitlab 容器的参数示例
+您可以使用以下的 docker run 命令可以创建出一个简单的 gitlab 容器：
+
+docker run \
+-d \
+-p 20180:80 \
+-p 20122:22 \
+--restart always \
+-v /data/gitlab/config:/etc/gitlab \
+-v /data/var/log/gitlab:/var/log/gitlab \
+-v /data/gitlab/data:/var/opt/gitlab \
+--name gitlab \
+gitlab/gitlab-ce:8.16.7-ce.0
+
+
+
 
 
 
