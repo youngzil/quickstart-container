@@ -17,7 +17,7 @@ https://help.aliyun.com/document_detail/25471.html?spm=5176.11065259.1996646101.
 
 4. 安装其他组件：比如RZSZ、Docker、Docker安装Redis、Docker安装MySQL
 [Linux上安装rz、sz](https://blog.csdn.net/qq_27870421/article/details/94550689)
-Docker安装参考 [CentOS 8.0 安装Docker](#CentOS-8.0-安装Docker)
+Docker安装参考 [CentOS 8.0 安装Docker](Docker安装.md#CentOS-8.0-安装Docker)
 [Docker安装Redis](/Users/yangzl/git/quickstart-cache/quickstart-redis/docs/deploy-shell/Docker安装Redis.md)
 [Docker安装MySQL](/Users/yangzl/git/quickstart-database/docs/MySQL/deploy/Docker安装MySQL.md)
 [Docker删除容器与镜像](https://blog.csdn.net/qq_32447301/article/details/79387649)

@@ -45,6 +45,8 @@ yum install -y https://download.docker.com/linux/centos/7/x86_64/stable/Packages
 
 3. 安装一些其他依赖  
 安装docker报错Error: Unable to find a match: docker
+
+执行下面的指令安装一些其他依赖
 ```
 yum install -y yum-utils device-mapper-persistent-data lvm2
 yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
