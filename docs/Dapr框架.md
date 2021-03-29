@@ -1,11 +1,9 @@
 Dapr（Distributed Application Runtime ，分布式应用运行时） 云和边缘计算的微服务构件
 
-
 [Dapr官网](https://dapr.io/)  
 [Dapr文档](https://docs.dapr.io/)  
 [Dapr Github](https://github.com/dapr/dapr)  
 [Dapr介绍](https://www.oschina.net/p/dapr)  
-
 
 An event-driven, portable runtime for building microservices on cloud and edge.
 
@@ -25,6 +23,14 @@ Dapr（Distributed Application Runtime ，分布式应用运行时）是微软�
 Dapr 整理了构建微服务应用为开放，独立的构建块的最佳实践，使用户能够使用自己选择的语言和框架来构建可移植的应用程序。每个构建块都是独立的，用户可以在应用中使用其中的一个或多个。
 
 
+
+
+
+https://i.cloudnative.to/dapr/src/an-li-fen-xiang
+
+https://www.newbe.pro/Newbe.Claptrap/Try-Tye-3/
+
+https://github.com/sjefvanleeuwen/showcase
 
 
 ---------------------------------------------------------------------------------------------------------------------

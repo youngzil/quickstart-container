@@ -141,6 +141,8 @@ docker ps -a -q  列出所有创建的容器ID。
 docker diff container名字  查看容器区别，检查容器里文件结构的更改。
 docker history nginx:v2	  查看容器历史
 
+
+
 运行、进入和退出Container
 docker run --name webserver -d -p 4000:80 nginx   -d后台运行
 docker run --name docker-demo -d -p 8080:80 docker-demo:0.1
@@ -183,6 +185,18 @@ docker kill -s KILL mynginx
 
 docker rm -f db01 db02  强制删除
 docker rm -l db  删除到容器的链接，不是删除容器
+
+
+
+
+容器启动日志查看
+docker logs -f -t --tail 20 zylmysql
+
+想创建mysql容器运行，但是发现出错了  
+先通过docker ps -a查到已经被停止的容器的id  
+然后通过docker logs id 来查看相应的日志信息  
+
+
 
 
 docker inspect : 获取容器/镜像的元数据。
