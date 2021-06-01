@@ -21,7 +21,8 @@ Linux下安装
 
 1. Run this command to download the current stable release of Docker Compose:
 ```
-sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
 ```
 
 2. Apply executable permissions to the binary:
@@ -129,9 +130,9 @@ up 创建并启动容器
 
 3.常用命令
 
-docker-compose up -d nginx                     构建建启动nignx容器
+docker compose up -d nginx                     构建建启动nignx容器
 
-docker-compose exec nginx bash            登录到nginx容器中
+docker compose exec nginx bash            登录到nginx容器中
 
 docker-compose down                              删除所有nginx容器,镜像
 

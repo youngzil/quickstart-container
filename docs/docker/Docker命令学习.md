@@ -1,10 +1,12 @@
 
 Docker命令包括：
-Docker本身
-Docker镜像
-Docker容器:容器日志查看
-Dockerfile结构和制作
-Docker原理：
+- [Docker本身](#Docker本身)
+- [Docker镜像](#Docker镜像)
+- [Docker容器](#Docker容器)
+- [Docker容器启动日志查看](#Docker容器启动日志查看)
+- [Dockerfile结构和制作](#Dockerfile结构和制作)
+
+Docker原理
 
 
 
@@ -41,7 +43,7 @@ Container标识：Container ID 或者 Container names
  
  
 
-docker本身
+## Docker本身
 docker version
 docker info
 docker login : 登陆到一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub
@@ -51,6 +53,7 @@ docker login -u 用户名 -p 密码 SERVER地址
 
 
 
+## Docker镜像
 docker镜像：显示和搜索，构建和删除，拉取和提交、导入和导出
 docker image ls (docker images)  列出本地镜像，docker images [OPTIONS] [REPOSITORY[:TAG]]
 docker search image名字
@@ -131,6 +134,7 @@ ADD xxx.tgz /app/pkg
 
 
 
+## Docker容器
 
 docker容器：显示部分和全部，显示历史和区别
 docker container ls 只会显示运行的容器
@@ -189,7 +193,7 @@ docker rm -l db  删除到容器的链接，不是删除容器
 
 
 
-容器启动日志查看
+## Docker容器启动日志查看
 docker logs -f -t --tail 20 zylmysql
 
 想创建mysql容器运行，但是发现出错了  
@@ -267,7 +271,10 @@ docker export -o mysql-`date +%Y%m%d`.tar a404c6c174a2
 
 
 
-Dockerfile结构和制作：详细查看Dockerfile文件
+
+## Dockerfile结构和制作
+
+详细查看Dockerfile文件
 
 Dockerfile 由一行行命令语句组成，并且支持以 # 开头的注释行。
 一般的，Dockerfile 分为四部分：基础镜像信息、维护者信息、镜像操作指令和容器启动时执行指令。
