@@ -146,9 +146,9 @@ docker-compose build nginx                     构建镜像 。
 
 docker-compose build --no-cache nginx   不带缓存的构建。
 
-docker-compose logs  nginx                     查看nginx的日志 
+docker compose logs  nginx                     查看nginx的日志 
 
-docker-compose logs -f nginx                   查看nginx的实时日志
+docker compose logs -f nginx                   查看nginx的实时日志
 
 docker-compose config  -q                        验证（docker-compose.yml）文件配置，当配置正确时，不输出任何内容，当文件配置错误，输出错误信息。 
 

@@ -1,11 +1,20 @@
+- [Grafana介绍](#Grafana介绍)
+- [Grafana安装](#Grafana安装)
+- [Grafana数据源和Dashboard](#Grafana数据源和Dashboard)
+
+
 
 ---------------------------------------------------------------------------------------------------------------------
+## Grafana介绍
 
-[Grafana官网](https://grafana.com/blog/)  
+
+[Grafana官网](https://grafana.com/grafana/)  
+[Grafana学习](https://grafana.com/blog/)  
 [Grafana Github](https://github.com/grafana/grafana)  
 [Grafana文档](https://grafana.com/docs/)  
 [Grafana安装手册](https://grafana.com/docs/grafana/latest/installation/)  
 [Grafana docker安装手册](https://grafana.com/docs/grafana/latest/installation/docker/)  
+[Grafana下载](https://grafana.com/grafana/download?platform=mac)  
 
 
 The open and composable observability and data visualization platform. Visualize metrics, logs, and traces from multiple sources like Prometheus, Loki, Elasticsearch, InfluxDB, Postgres and many more.
@@ -18,11 +27,45 @@ The open-source platform for monitoring and observability.
 
 
 ---------------------------------------------------------------------------------------------------------------------
+## Grafana安装
+
 
 [Grafana安装手册](https://grafana.com/docs/grafana/latest/installation/)  
 [Grafana docker安装手册](https://grafana.com/docs/grafana/latest/installation/docker/)
 
 [grafana配置](https://www.cnblogs.com/shhnwangjian/p/6911415.html)  
+
+
+
+
+### MacOS安装
+
+brew update
+brew install grafana
+
+curl -O https://dl.grafana.com/oss/release/grafana-7.5.7.darwin-amd64.tar.gz
+tar -zxvf grafana-7.5.7.darwin-amd64.tar.gz
+
+
+
+后台启动grafana
+
+nohup yourPath/bin/grafana-server > yourLogPath/grafana.stdout 2>&1 &
+
+
+cd grafana-7.5.7
+mkdir -p logs
+nohup bin/grafana-server > logs/grafana.stdout 2>&1 &
+
+
+登录grafana，默认端口为3000, 初始账号密码为admin/admin
+
+访问http://localhost:3000就可以进入到Grafana的界面中，默认情况下使用账户admin/admin进行登录。
+
+
+
+
+### Docker安装
 
 docker pull grafana/grafana:latest
 
@@ -33,6 +76,7 @@ docker run -d --name=grafana -p 3000:3000 grafana/grafana
 docker run -d --name grafana -p 3000:3000 grafana/grafana:7.5.2
 
 
+
 docker exec -it grafana bash
 
 ps -ef| grep grafana
@@ -40,7 +84,7 @@ ps -ef| grep grafana
 查看grafana进程信息，数据路径和日志路径等
 
 
-http://localhost:3000/
+访问http://localhost:3000就可以进入到Grafana的界面中，默认情况下使用账户admin/admin进行登录。
 
 
 配置InfluxDB数据源：
@@ -51,7 +95,7 @@ http://localhost:3000/
 
 
 
-安装插件
+### 安装插件
 
 docker run -d \
 --name=grafana \
@@ -75,6 +119,8 @@ grafana/grafana
 
 
 ---------------------------------------------------------------------------------------------------------------------
+## Grafana数据源和Dashboard
+
 
 一、添加数据源
 
@@ -90,6 +136,17 @@ Grafana支持同时绑定多套数据源，根据自己需求管理即可。
 仪表盘由行（Row）+图表面板（Panel）组成。
 Panel主要支持：Graph，Singlestat，Dashlist，Table和Text。
 
+图形（Graph）、统计（Stat）、表格（Table）、文本（Text）
+Panel：面板，实际上就是row展示信息的方式，支持表格（table），列表（alert list），热图（Heatmap）等多种方式，具体可以去官网上查阅。
+
+
+
+[grafana dashboards模板下载](https://grafana.com/grafana/dashboards)
+
+
+[Grafana全面瓦解](https://www.jianshu.com/p/7e7e0d06709b)  
+[Prometheus 快速入门教程（三）：Grafana 图表配置快速入门](https://www.cnblogs.com/chanshuyi/p/03_grafana_chart_quick_start.html)  
+[Prometheus运维七 详解可视化Grafana工具](https://blog.csdn.net/ZhanBiaoChina/article/details/107048324)  
 
 
 
