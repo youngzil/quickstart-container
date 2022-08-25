@@ -7,6 +7,13 @@
 
 [容器开放接口规范（CRI OCI CNI）](容器开放接口规范（CRI%20OCI%20CNI）.md)
 
+Kubernetes中开放的以下接口，可以分别对接不同的后端，来实现自己的业务逻辑：
+- CRI（Container Runtime Interface）：容器运行时接口，提供计算资源
+- CNI（Container Network Interface）：容器网络接口，提供网络资源
+- CSI（Container Storage Interface）：容器存储接口，提供存储资源
+
+
+
 CRI - Container Runtime Interface（容器运行时接口）
 
 CNI - Container Network Interface(容器网络接口)
